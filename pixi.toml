@@ -11,8 +11,6 @@ gen2d = { path = "packages/gen2d" }
 modgen = { path = "." }
 
 [pypi-dependencies]
-genjax = { git = "https://github.com/chisym/genjax", branch = "main" }
-genstudio = { git = "https://github.com/chisym/genstudio", branch = "main" }
 
 [tasks]
 
