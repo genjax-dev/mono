@@ -125,7 +125,7 @@ packages:
   depends:
   - python
   input:
-    hash: adb3344c6c3b39b63c16022c84e20dd8fca6f23a09ae2525024966d1f733ff91
+    hash: 2112e275af464b639070e3059ba881f7f84c0b710460fe576cb91a169c1ead02
     globs:
     - pixi.toml
 - conda: https://prefix.dev/conda-forge/linux-64/ld_impl_linux-64-2.43-h712a8e2_4.conda
@@ -496,7 +496,7 @@ packages:
   size: 280830
   timestamp: 1736986295869
 - conda: .
-  name: modgen
+  name: mono
   version: 0.1.0
   build: pyhbf21a9e_0
   subdir: noarch
@@ -504,7 +504,7 @@ packages:
   - numpy <2.0.0
   - python
   input:
-    hash: 58f834fd728b8dc056749defa310f0acd66adb6049c3c28e1ee5632555e622e4
+    hash: a033d28855ba410d37b7c75a0a8f09e53cb4b6a1e5453fb004dc19c97a348250
     globs:
     - pixi.toml
 - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda

@@ -35,9 +35,11 @@ system-requirements = { cuda = "12.4" }
 
 [feature.cuda.target.linux-64.dependencies]
 cudnn = ">=9.7.1.26,<10"
+cuda-compat = "*"
+cuda-compat-impl = "*"
 
 [feature.cuda.target.linux-64.pypi-dependencies]
-jax = { version = "==0.4.35", extras = ["cuda12"] }
+jax = { version = "==0.4.35", extras = ["cuda12-local"] }
 
 [package]
 name = "gen2d"
