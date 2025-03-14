@@ -3,7 +3,7 @@ channels = [
   "https://prefix.dev/pixi-build-backends",
   "https://prefix.dev/conda-forge",
 ]
-platforms = ["linux-64", "osx-arm64"]
+platforms = ["linux-64", "osx-arm64", "osx-64"]
 preview = ["pixi-build"]
 
 [environments]
@@ -19,7 +19,7 @@ XLA_FLAGS = "--xla_gpu_enable_command_buffer="
 gen2d = { path = "." }
 python = ">=3.11,<4.0"
 pooch = ">=1.8.2,<2"
-dm-tree = ">=0.1.9,<0.2"
+dm-tree = "==0.1.8"
 
 [pypi-dependencies]
 genjax = { version = "==0.10.1", extras = ["genstudio"] }
