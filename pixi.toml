@@ -8,14 +8,14 @@ preview = ["pixi-build"]
 
 [dependencies]
 gen2d = { path = "packages/gen2d" }
-modgen = { path = "." }
+mono = { path = "." }
 
 [pypi-dependencies]
 
 [tasks]
 
 [package]
-name = "modgen"
+name = "mono"
 version = "0.1.0"
 
 [package.build]
