@@ -1,17 +1,47 @@
-# Overview
-TODO: @mathieu
+# Gen2D
 
-# CPU
-To run `notebooks/gen2d.ipynb` on CPU via Cursor:
-1. `pixi install -e cpu`
-2. Command palette: `Python: Select Interpreter` and choose `.pixi/envs/cpu/bin/python`
-3. Open the notebook and select the `.pixi/envs/cpu/bin/python` kernel
-4. Run the notebook
+## Development Setup
 
-# GPU
-To run `notebooks/gen2d.ipynb` on GPU via Cursor:
-1. Spin up a GPU VM and connect: https://www.notion.so/Working-with-VMs-18ac15e3585b8009a7b5f49918e42231?pvs=4
-2. `pixi install -e gpu`
-3. Command palette: `Python: Select Interpreter` and choose `.pixi/envs/gpu/bin/python`
-4. Open the notebook and select the `.pixi/envs/gpu/bin/python` kernel
-5. Run the notebook
+Before running the following steps, run `./scripts/install-environment.sh` in the root directory to install `pixi`.
+
+### CPU Development Environment
+
+For CPU-based development:
+
+1. Create and activate the CPU environment:
+
+```bash
+pixi install -e cpu
+```
+2. When using VS Code/Cursor:
+
+- Open Command Palette (Ctrl/Cmd + Shift + P)
+- Select `Python: Select Interpreter`
+- Choose `packages/gen2d/.pixi/envs/cpu/bin/python`
+
+3. For Jupyter notebooks:
+
+- Open the notebook (e.g. `notebooks/gen2d.ipynb`)
+- Select the `packages/gen2d/.pixi/envs/cpu/bin/python` kernel
+- You can now run the notebook
+
+### GPU Development Environment
+
+For GPU-based development (Linux only):
+
+3. Create and activate the GPU environment:
+   ```bash
+   pixi install -e gpu
+   ```
+
+4. When using VS Code/Cursor:
+
+- Open Command Palette (Ctrl/Cmd + Shift + P)
+- Select `Python: Select Interpreter`
+- Choose `packages/gen2d/.pixi/envs/gpu/bin/python`
+
+5. For Jupyter notebooks:
+
+- Open the notebook (e.g. `notebooks/gen2d.ipynb`)
+- Select the `packages/gen2d/.pixi/envs/gpu/bin/python` kernel
+- You can now run the notebook
