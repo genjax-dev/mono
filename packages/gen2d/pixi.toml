@@ -22,16 +22,9 @@ pooch = ">=1.8.2,<2"
 dm-tree = ">=0.1.9,<0.2"
 
 [pypi-dependencies]
-genjax = { git = "https://github.com/chisym/genjax", branch = "main" }
-genstudio = { git = "https://github.com/chisym/genstudio", branch = "main" }
-pillow = ">=10.4.0, <11"
-ipython = ">=8.32.0, <9"
+genjax = { version = "==0.10.1", extras = ["genstudio"] }
 ipykernel = ">=6.29.5, <7"
-seaborn = ">=0.13.2, <0.14"
-numpy = "<2.0.0"
-tensorflow-probability = ">=0.23.0, <0.24"
-tensorflow = ">=2.18.0, <3"
-penzai = "*"
+matplotlib = ">=3.8.0"
 
 [feature.cpu.pypi-dependencies]
 jax = "==0.4.35"
@@ -44,7 +37,7 @@ system-requirements = { cuda = "12.4" }
 cudnn = ">=9.7.1.26,<10"
 
 [feature.cuda.target.linux-64.pypi-dependencies]
-jax = { version = "==0.4.35", extras = ["cuda12-local"] }
+jax = { version = "==0.4.35", extras = ["cuda12"] }
 
 [package]
 name = "gen2d"
