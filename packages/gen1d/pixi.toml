@@ -1,0 +1,55 @@
+[workspace]
+channels = [
+  "https://prefix.dev/pixi-build-backends",
+  "https://prefix.dev/conda-forge",
+]
+platforms = ["linux-64", "osx-arm64", "osx-64"]
+preview = ["pixi-build"]
+
+[environments]
+cpu = { features = ["cpu"], solve-group = "default" }
+gpu = { features = ["cuda"], solve-group = "default" }
+
+[activation.env]
+XLA_PYTHON_CLIENT_PREALLOCATE = "false"
+XLA_PYTHON_CLIENT_ALLOCATOR = "platform"
+XLA_FLAGS = "--xla_gpu_enable_command_buffer="
+
+[dependencies]
+gen1d = { path = "." }
+python = ">=3.11,<4.0"
+pooch = ">=1.8.2,<2"
+dm-tree = "==0.1.8"
+
+[pypi-dependencies]
+genjax = { version = "==0.10.1", extras = ["genstudio"] }
+ipykernel = ">=6.29.5, <7"
+matplotlib = ">=3.8.0"
+
+[feature.cpu.pypi-dependencies]
+jax = "==0.4.35"
+
+[feature.cuda]
+platforms = ["linux-64"]
+system-requirements = { cuda = "12.4" }
+
+[feature.cuda.target.linux-64.dependencies]
+cudnn = ">=9.7.1.26,<10"
+cuda-compat = "*"
+cuda-compat-impl = "*"
+
+[feature.cuda.target.linux-64.pypi-dependencies]
+jax = { version = "==0.4.35", extras = ["cuda12-local"] }
+
+[package]
+name = "gen1d"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-python", version = "0.1.*" }
+
+[package.host-dependencies]
+hatchling = "==1.26.3"
+python = ">=3.11,<4.0"
+
+[package.run-dependencies]
