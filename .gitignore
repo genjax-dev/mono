@@ -216,5 +216,3 @@ site
 .pixi
 *.egg-info
 *.conda
-
-.hypothesis/
