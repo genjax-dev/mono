@@ -15,11 +15,15 @@ XLA_PYTHON_CLIENT_PREALLOCATE = "false"
 XLA_PYTHON_CLIENT_ALLOCATOR = "platform"
 XLA_FLAGS = "--xla_gpu_enable_command_buffer="
 
+[tasks]
+lab = "jupyter lab notebooks/gen2d.ipynb"
+
 [dependencies]
 gen2d = { path = "." }
 python = ">=3.11,<4.0"
 pooch = ">=1.8.2,<2"
 dm-tree = "==0.1.8"
+jupyter = ">=1.1.1,<2"
 
 [pypi-dependencies]
 genjax = { version = "==0.10.1", extras = ["genstudio"] }
