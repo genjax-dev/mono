@@ -15,6 +15,7 @@ pixi install -e cpu
 ```
 2. When using VS Code/Cursor:
 
+- Open Root directory of the Package: `packages/gen1d`
 - Open Command Palette (Ctrl/Cmd + Shift + P)
 - Select `Python: Select Interpreter`
 - Choose `packages/gen1d/.pixi/envs/cpu/bin/python`
@@ -36,6 +37,7 @@ For GPU-based development (Linux only):
 
 4. When using VS Code/Cursor:
 
+- Open Root directory of the Package: `packages/gen1d`
 - Open Command Palette (Ctrl/Cmd + Shift + P)
 - Select `Python: Select Interpreter`
 - Choose `packages/gen1d/.pixi/envs/gpu/bin/python`
