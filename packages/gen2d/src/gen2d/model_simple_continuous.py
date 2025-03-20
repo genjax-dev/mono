@@ -53,9 +53,21 @@ GAMMA_RATE_PARAMETER = 1.0
 
 
 @Pytree.dataclass
-class Hyperparams(Pytree):
-    # Most parameters will be inferred via enumerative Gibbs in revised version
+class Hyperhyperparams(Pytree):
+    # Hyper params for prior xy mean and spread of hyper clusters
+    mu_xy_hyper: jnp.ndarray
+    sigma_xy_hyper: jnp.ndarray
 
+    # Hyper params for xy inverse-gamma, roughly xy width of each hyper-cluster cluster
+    a_xy_hyper: jnp.ndarray
+    b_xy_hyper: jnp.ndarray
+
+    # Hyper param for cluster mixture weight
+    alpha_hyper: float
+
+
+@Pytree.dataclass
+class Hyperparams(Pytree):
     # Hyper params for prior xy mean and spread of clusters
     mu_xy: jnp.ndarray
     sigma_xy: jnp.ndarray
@@ -71,7 +83,7 @@ class Hyperparams(Pytree):
     a_rgb: jnp.ndarray
     b_rgb: jnp.ndarray
 
-    # Hyper param for mixture weight
+    # Hyper param for cluster mixture weight
     alpha: float
 
     # number of Gaussians
@@ -89,6 +101,19 @@ class LikelihoodParams(Pytree):
     rgb_mean: FloatArray
     rgb_spread: FloatArray
     mixture_probs: FloatArray
+
+
+@gen
+def hyper_blobs(blob_idx: int, hypers: Hyperhyperparams):
+    a_xy = hypers.a_xy_hyper
+    b_xy = hypers.b_xy_hyper
+    mu_xy = hypers.mu_xy_hyper
+    sigma_xy = hypers.sigma_xy
+    alpha = hypers.alpha_hyper
+
+    xy_mean, xy_spread = xy_model.inline(blob_idx, a_xy, b_xy, mu_xy, sigma_xy)
+    mixture_weight = gamma_safe(alpha, GAMMA_RATE_PARAMETER) @ "mixture_weight"
+    return xy_mean, xy_spread, mixture_weight
 
 
 @gen
@@ -155,7 +180,6 @@ def model(hypers: Hyperparams):
         @ "blob_model"
     )
 
-    # TODO: should I use them in logspace?
     mixture_probs = mixture_weights / sum(mixture_weights)
     likelihood_params = LikelihoodParams(
         xy_mean, xy_spread, rgb_mean, rgb_spread, mixture_probs
