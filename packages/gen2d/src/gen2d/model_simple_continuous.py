@@ -34,11 +34,14 @@ The model is implemented using the GenJAX probabilistic programming framework.
 """
 
 import jax.numpy as jnp
-
+import jax
 import genjax
-from genjax import Pytree, categorical, gamma, gen, inverse_gamma, normal
+from genjax import Pytree, gamma, gen, inverse_gamma, normal
 from genjax._src.core.typing import Array
 from genjax.typing import FloatArray
+from tensorflow_probability.substrates import jax as tfp
+
+tfd = tfp.distributions
 
 
 def sample_gamma_safe(key, alpha, beta):
@@ -159,36 +162,67 @@ def blob_model(blob_idx: int, hypers: Hyperparams):
 
 @gen
 def likelihood_model(
-    pixel_idx: int,
+    size: Const,
     params: LikelihoodParams,
 ):
-    blob_idx: Array = categorical(params.mixture_probs) @ "blob_idx"
-    xy_mean: Array = params.xy_mean[blob_idx]
-    xy_spread = params.xy_spread[blob_idx]
-    rgb_mean = params.rgb_mean[blob_idx]
-    rgb_spread = params.rgb_spread[blob_idx]
-
+    size = size.unwrap
+    mixture_probs = params.mixture_probs
+    blob_idxs = tfd.Categorical(probs=mixture_probs).sample(
+        seed=jax.random.PRNGKey(0), sample_shape=(size,)
+    )
+    xy_mean: Array = params.xy_mean[blob_idxs]
+    xy_spread = params.xy_spread[blob_idxs]
+    rgb_mean = params.rgb_mean[blob_idxs]
+    rgb_spread = params.rgb_spread[blob_idxs]
     xy = normal(xy_mean, xy_spread) @ "xy"
     rgb = normal(rgb_mean, rgb_spread) @ "rgb"
     return xy, rgb
 
 
+# @gen
+# def likelihood_model(
+#     pixel_idx: int,
+# ):
+#     # blob_idx: Array = categorical(params.mixture_probs) @ "blob_idx"
+#     # xy_mean: Array = params.xy_mean[blob_idx]
+#     # xy_spread = params.xy_spread[blob_idx]
+#     # rgb_mean = params.rgb_mean[blob_idx]
+#     # rgb_spread = params.rgb_spread[blob_idx]
+#     xy_mean = jnp.ones(2)
+#     xy_spread = jnp.ones(2)
+#     rgb_mean = jnp.ones(3)
+#     rgb_spread = jnp.ones(3)
+
+#     xy = normal(1., 1.) @ "xy"
+#     # rgb = normal(rgb_mean, rgb_spread) @ "rgb"
+#     return xy
+
+
 @gen
 def model(hypers: Hyperparams):
-    xy_mean, xy_spread, rgb_mean, rgb_spread, mixture_weights = (
-        blob_model.vmap(in_axes=(0, None))(jnp.arange(hypers.n_blobs), hypers)
-        @ "blob_model"
-    )
+    # xy_mean, xy_spread, rgb_mean, rgb_spread, mixture_weights = (
+    #     blob_model.vmap(in_axes=(0, None))(jnp.arange(hypers.n_blobs), hypers)
+    #     @ "blob_model"
+    # )
 
-    mixture_probs = mixture_weights / sum(mixture_weights)
+    # mixture_probs = mixture_weights / jnp.sum(mixture_weights)
+
+    mixture_probs = jnp.ones(900) / 900
+    xy_mean = jnp.ones((900, 2))
+    xy_spread = jnp.ones((900, 2))
+    rgb_mean = jnp.ones((900, 3))
+    rgb_spread = jnp.ones((900, 3))
+
     likelihood_params = LikelihoodParams(
         xy_mean, xy_spread, rgb_mean, rgb_spread, mixture_probs
     )
-    idxs = jnp.arange(hypers.H * hypers.W)
 
-    _ = (
-        likelihood_model.vmap(in_axes=(0, None))(idxs, likelihood_params)
-        @ "likelihood_model"
-    )
+    size = hypers.H * hypers.W
+
+    # _ = (
+    #     likelihood_model.vmap(in_axes=(0))(idxs)
+    #     @ "likelihood_model"
+    # )
+    _ = likelihood_model(size, likelihood_params) @ "likelihood_model"
 
     return None
