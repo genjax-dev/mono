@@ -3,7 +3,7 @@ channels = [
   "https://prefix.dev/pixi-build-backends",
   "https://prefix.dev/conda-forge",
 ]
-platforms = ["linux-64", "osx-arm64", "osx-64"]
+platforms = ["linux-64", "osx-arm64"]
 preview = ["pixi-build"]
 
 [environments]
@@ -22,12 +22,12 @@ pooch = ">=1.8.2,<2"
 dm-tree = "==0.1.8"
 
 [pypi-dependencies]
-genjax = { version = "==0.10.1", extras = ["genstudio"] }
+genjax = { version = "==0.10.3", extras = ["genstudio"] }
 ipykernel = ">=6.29.5, <7"
 matplotlib = ">=3.8.0"
 
 [feature.cpu.pypi-dependencies]
-jax = "==0.4.35"
+jax = ">=0.5.0"
 
 [feature.cuda]
 platforms = ["linux-64"]
@@ -39,7 +39,7 @@ cuda-compat = "*"
 cuda-compat-impl = "*"
 
 [feature.cuda.target.linux-64.pypi-dependencies]
-jax = { version = "==0.4.35", extras = ["cuda12-local"] }
+jax = { version = ">=0.5.0", extras = ["cuda12-local"] }
 
 [package]
 name = "gen1d"
